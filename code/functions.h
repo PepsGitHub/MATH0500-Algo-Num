@@ -23,7 +23,7 @@
 typedef struct{
     unsigned long *index_column; //Contient les indices de début de chaque colonne pour les 2 vecteurs suivants
     unsigned long *index_row; //Contient les indices de ligne de chaque élément
-    long *value; //Contient les valeurs de chaque élément
+    long double *value; //Contient les valeurs de chaque élément
     unsigned long nb_elements; //Nombre d'éléments de la matrice
 }CSparse;
 
@@ -31,7 +31,7 @@ typedef struct{
  * \fn int load_sparse_matrix(char *matrix_filename)
  * \brief Lis un fichier MatrixMarket puis crée une matrice creuse en format column compressed.
  * 
- * @param matrix_filename le chemin vers le fichier contenant l'image.
+ * @param matrix_filename le chemin vers le fichier MatrixMarket contenant la matrice.
  *
  * @pre: matrix_filename != NULL
  * @post: la lecture du fichier et la création de la matrice creuse.
