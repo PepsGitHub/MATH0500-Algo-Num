@@ -33,13 +33,17 @@ int load_sparse_matrix(char *matrix_filename){
     unsigned long rows, columns, non_zeros;
 
     fscanf(fp, "%*[^\n]\n");//Première ligne du fichier à ignorer
-    fscanf(fp, "%lu %lu %lu", &rows, &columns, &non_zeros);//Deuxième ligne du fichier contenant ces informations
+    fscanf(fp, "%lu %lu %lu ", &rows, &columns, &non_zeros);//Deuxième ligne du fichier contenant ces informations
 
-    double *matrix, *value;
+    double *value;
     unsigned long *index_row, *index_column;
 
     //Allocation dynamique
-    matrix = malloc(rows * columns * sizeof(double));
+    double **matrix;
+    matrix = (double **)calloc(rows, sizeof(double*));
+    for(unsigned long i = 0; i < rows; i++) 
+        matrix[i] = (double *)calloc(columns, sizeof(double));
+    
     index_row = malloc(rows * sizeof(unsigned long));
     index_column = malloc(columns * sizeof(unsigned long));
     value = malloc(non_zeros * sizeof(double));
@@ -50,14 +54,14 @@ int load_sparse_matrix(char *matrix_filename){
         return -1;
     }
 
-    unsigned int i = 0;
+    unsigned long i = 0;
 
     while(fscanf(fp, "%lu %lu %lf", &index_row[i], &index_column[i], &value[i]) == 3)
         i++;
 
     printf("\n\n");
 
-    for(unsigned long i = 0; i < non_zeros; i++)
+    /*for(unsigned long i = 0; i < non_zeros; i++)
         printf("%lu ", index_row[i]);
 
     printf("\n\n");
@@ -70,78 +74,24 @@ int load_sparse_matrix(char *matrix_filename){
     for(unsigned long i = 0; i < non_zeros; i++)
         printf("%f ", value[i]);
 
-    printf("\n\n");
+    printf("\n\n");*/
 
+    for(unsigned long i = 0; i < non_zeros; i++){
+        matrix[index_row[i]][index_column[i]] = value[i];
+    }
 
-    /*for(int i = 0; i < rows; i++)
-        for(int j = 0; j < columns; j++){
-            
-        }*/
-
+    for(unsigned long i = 0; i < rows; i++){
+        for(unsigned long j = 0; j < columns; j++)
+            printf("%lf ", matrix[i][j]);
+        printf("\n");
+    }
     //Destructeurs
+    for(unsigned long i = 0; i < rows; i++) 
+        free(matrix[i]);
     free(matrix);
     free(index_row);
     free(index_column);
     free(value);
-
-    /*unsigned long rows, columns, non_zeros, *columns_indexes;
-
-    fscanf(fp, "%*[^\n]\n");//Première ligne du fichier à ignorer
-    fscanf(fp, "%lu %lu %lu", &rows, &columns, &non_zeros);//Deuxième ligne du fichier contenant ces informations
-
-    //Allocation dynamique
-    CSparse *c = malloc((non_zeros * 2 + 1) * sizeof(unsigned long) + non_zeros * sizeof(long double));
-    c->index_row = malloc(non_zeros * sizeof(unsigned long));
-    c->index_column = malloc(non_zeros * sizeof(unsigned long));
-    c->value = malloc(non_zeros * sizeof(long double));
-
-    columns_indexes = malloc(non_zeros * sizeof(unsigned long));
-
-    //Check allocation dynamique
-    if(!c || !columns_indexes){
-        printf("Erreur dans l'allocation de la mémoire");
-        return -1;
-    }
-
-    c->nb_elements = non_zeros;
-    //printf("%lu\n", c->nb_elements);
-
-    unsigned int i = 0, start_column_value = 0, j = 0;
-
-    c->index_column[j] = 0;
-
-    //Lecture de la matrice
-    while(fscanf(fp, "%lu %lu %Lf", &c->index_row[i], &columns_indexes[i], &c->value[i]) == 3){
-        if(i > 0 && c->index_row[i] > c->index_row[i-1]){
-            c->index_column[j] = start_column_value;
-            printf("%lu ", c->index_column[j]);
-            j++;
-        }
-        //printf("%lu ", c->index_row[i]);
-        //printf("%lu ", c->index_column[i]);
-        //printf("%ld\n", c->value[i]);
-        start_column_value++;
-        i++;
-    }
-
-    printf("\n\n");
-
-    for(unsigned long i = 0; i < c->nb_elements; i++)
-        printf("%lu ", c->index_row[i]);
-
-    printf("\n\n");
-
-    for(unsigned long i = 0; i < c->nb_elements; i++)
-        printf("%Lf ", c->value[i]);
-
-    printf("\n\n");
-
-    //Destructeurs
-    free(c->index_row);
-    free(c->index_column);
-    free(c->value);
-    free(c);
-    free(columns_indexes);*/
 
     return 0;
 }
