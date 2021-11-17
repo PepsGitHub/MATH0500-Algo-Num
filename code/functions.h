@@ -18,16 +18,6 @@
 #define __FUNCTIONS__
 
 /**
- * Déclaration de la structure CSparse représentant une matrice creuse sous le format column compressed
- */
-typedef struct{
-    unsigned long *index_column; //Contient les indices de début de chaque colonne pour les 2 vecteurs suivants
-    unsigned long *index_row; //Contient les indices de ligne de chaque élément
-    long double *value; //Contient les valeurs de chaque élément
-    unsigned long nb_elements; //Nombre d'éléments de la matrice
-}CSparse;
-
-/**
  * \fn int load_sparse_matrix(char *matrix_filename)
  * \brief Lis un fichier MatrixMarket puis crée une matrice creuse en format column compressed.
  * 
