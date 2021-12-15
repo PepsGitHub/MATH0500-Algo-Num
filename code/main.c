@@ -38,7 +38,6 @@ int main(int argc, char **argv){
             return -2;
         }
     }
-    
     load_sparse_matrix(matrix_filename);
 
     return EXIT_SUCCESS;
