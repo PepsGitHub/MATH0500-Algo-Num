@@ -6,7 +6,7 @@
  * @author Delacollette Guillaume - Université de Liège
  * @author Dumoulin Peissone - Université de Liège
  * @projet: MATH0500-1 Projet première session 2021-2022
- * @date 06/11/21
+ * @date 15/12/21
  * @version 1.0
  */
 
@@ -21,14 +21,26 @@
 
 int main(int argc, char **argv){
 
-    char *matrix_filename = NULL, *optstring = ":f:";
+    char *matrix_L = NULL, *matrix_U = NULL, *vector_x = NULL, *vector_a = NULL, *optstring = ":L:U:x:a:";
 
     int val;
     while((val = getopt(argc, argv, optstring)) != EOF){
         switch(val){
-        case 'f':
-            matrix_filename = optarg;
-            printf("Nom du fichier contenant la matrice: %s\n", matrix_filename);
+        case 'L':
+            matrix_L = optarg;
+            printf("Nom du fichier contenant la matrice L: %s\n", matrix_L);
+            break;
+        case 'U':
+            matrix_U = optarg;
+            printf("Nom du fichier contenant la matrice U: %s\n", matrix_U);
+            break;
+        case 'x':
+            vector_x = optarg;
+            printf("Nom du fichier contenant le vecteur x: %s\n", vector_x);
+            break;
+        case 'a':
+            vector_a = optarg;
+            printf("Nom du fichier contenant le vecteur a: %s\n\n", vector_a);
             break;
         case '?':
             printf("Option inconnue: %c\n", optopt);
@@ -38,7 +50,10 @@ int main(int argc, char **argv){
             return -2;
         }
     }
-    load_sparse_matrix(matrix_filename);
+    load_matrix(matrix_L);
+    load_matrix(matrix_U);
+    load_vector(vector_a);
+    load_vector(vector_x);
 
     return EXIT_SUCCESS;
 }

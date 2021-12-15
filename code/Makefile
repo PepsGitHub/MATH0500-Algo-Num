@@ -13,7 +13,7 @@ LD=gcc
 LDFLAGS=
 
 # Files
-EXEC=test
+EXEC=executable
 MODULES=main.c functions.c
 OBJECTS=main.o functions.o
 
@@ -21,7 +21,7 @@ OBJECTS=main.o functions.o
 
 all: $(EXEC)
 
-test: $(OBJECTS)
+executable: $(OBJECTS)
 	$(LD) -o $(EXEC) $(OBJECTS) $(LDFLAGS)
 
 main.o: main.c
